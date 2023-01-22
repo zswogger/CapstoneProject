@@ -1,0 +1,214 @@
+﻿:root {
+    --background-color: #3F3F3F;
+    --dark-background-color: #2B2B2B;
+    --accent: #00C896;
+    --text-color: #FFF;
+    --btn-light: #4A4A4A;
+    --btn-light-color: #FFF;
+    --btn-light-border: #4A4A4A;
+}
+
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+}
+
+body {
+    vertical-align: middle;
+    background-color: var(--background-color);
+    padding-bottom: 70px
+}
+
+.btn-danger {
+    background-color: var(--dark-background-color) !important;
+    border-color: red;
+}
+
+    .btn-danger:hover {
+        color: #fff;
+        background-color: red !important;
+        border-color: red;
+    }
+
+.btn-primary {
+    background-color: var(--dark-background-color) !important;
+    border-color: var(--accent);
+}
+
+    .btn-primary:hover {
+        color: #fff;
+        background-color: var(--accent) !important;
+        border-color: var(--accent);
+    }
+
+.btn-primary-dashboard {
+    background-color: var(--dark-background-color) !important;
+    border-color: var(--accent);
+    color: var(--text-color);
+    margin-bottom: 10px !important;
+}
+
+    .btn-primary-dashboard:hover {
+        color: #fff;
+        background-color: var(--accent) !important;
+        border-color: var(--accent);
+    }
+
+.btn-light-dashboard {
+    color: var(--dark-background-color);
+    margin-bottom: 10px !important;
+}
+
+    .btn-light-dashboard:hover {
+        color: var(--text-color);
+        background-color: var(--accent) !important;
+        border-color: var(--accent);
+    }
+
+.nav-link {
+    display: block;
+    padding: 0.5rem 1rem;
+    color: var(--accent) !important;
+    text-decoration: none;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+}
+
+.navbar-brand {
+    color: white;
+}
+
+a, a:link, a:visited {
+    color: var(--accent);
+}
+
+.boxed-form {
+    padding: 40px;
+    background-color: var(--bs-gray-800);
+    width: auto;
+    font-size: 18px;
+    position: relative;
+    border-radius: 10px;
+    box-shadow: 0px 0px 8px 5px rgba(0, 0, 0, .4);
+    min-height: 100px;
+    display: inline-block;
+}
+
+.centered-div {
+    text-align: center;
+}
+
+.right-div {
+    margin-left: auto;
+    margin-right: 0;
+}
+
+h5 {
+    color: var(--accent);
+}
+
+.form-control {
+    text-align: center;
+}
+
+.border-top {
+    width: 100%;
+}
+
+.left-line {
+    border-left: 1px solid white;
+    padding: 10px;
+}
+
+table, th, td {
+    border: 1px solid var(--accent);
+    padding-left: 20px;
+    padding-right: 20px;
+    color: var(--text-color);
+}
+
+.memo-box {
+    height: 100px;
+}
+
+.full-button {
+    width: 100%;
+}
+
+/*Nav Items*/
+.nav-container {
+    min-height: 50px;
+    padding-top: 10px;
+    padding-left: 15%;
+    display: block;
+    background-color: var(--dark-background-color);
+}
+
+.nav-item {
+    color: dimgray !important;
+}
+
+.lock-right {
+    color: var(--accent);
+    margin-top: 5px;
+    position: fixed;
+    right: 35px;
+}
+
+/*Modal*/
+.modal-content {
+    background-color: var(--dark-background-color);
+}
+
+.modal-title {
+    color: var(--accent);
+}
+
+.modal-body {
+    color: var(--text-color);
+}
+
+/*Admin Tabs*/
+.tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: var(--dark-background-color);
+    color: var(--accent);
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+    background-color: #ddd;
+}
+
+/* Style the tab content */
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+    color: var(--text-color);
+}
