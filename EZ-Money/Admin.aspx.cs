@@ -6,11 +6,15 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using EZMoney;
+using System.Web.Services;
 
 namespace EZMoney
 {
     public partial class Admin : System.Web.UI.Page
     {
+        public static int userStart = 1, userEnd = 50, transactionStart = 1, transactionEnd = 50, profitStart = 1, profitEnd = 50;
+        General gen = new General();
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Global.sessionUser == null)
@@ -28,11 +32,110 @@ namespace EZMoney
             loadProfitTable();
         }
 
+        public void nextPage(object sender, EventArgs e)
+        {
+            Button btn = (Button)sender;
+            string id = btn.ID;
+            switch (id)
+            {
+                case "nextUser":
+                    userStart += 50;
+                    userEnd += 50;
+                    checkPage(userStart, userEnd, 0);
+                    loadUsersTable();
+                    break;
+
+                case "nextTransaction":
+                    transactionStart += 50;
+                    transactionEnd += 50;
+                    loadTransactionTable();
+                    break;
+
+                case "nextProfit":
+                    profitStart += 50;
+                    profitEnd += 50;
+                    loadProfitTable();
+                    break;
+            }
+        }
+
+        public void checkPage(int start, int stop, int tab)
+        {
+            if (start <= 0 || stop < 50)
+            {
+                switch(tab)
+                {
+                    case 0:
+                        userStart = 1;
+                        userEnd = 50;
+                        break;
+                    case 1:
+                        transactionStart = 1;
+                        transactionEnd = 50;
+                        break;
+                    case 2:
+                        profitStart = 1;
+                        profitEnd = 50;
+                        break;
+                }
+                gen.generateToast("Something went wrong! Moving back to first page", ClientScript);
+            }
+        }
+
+        public void prevPage(object sender, EventArgs e)
+        {
+            Button btn = (Button)sender;
+            string id = btn.ID;
+            switch (id)
+            {
+                case "prevUser":
+                    if (userStart <= 1)
+                    {
+                        gen.generateToast("No previous records.", ClientScript);
+                        return;
+                    }
+                    userStart -= 50;
+                    userEnd -= 50;
+                    checkPage(userStart, userEnd, 0);
+                    loadUsersTable();
+                    break;
+
+                case "prevTransaction":
+                    if (transactionStart <= 1)
+                    {
+                        gen.generateToast("No previous records.", ClientScript);
+                        return;
+                    }
+                    transactionStart -= 50;
+                    transactionEnd -= 50;
+                    loadTransactionTable();
+                    break;
+
+                case "prevProfit":
+                    if (profitStart <= 1)
+                    {
+                        gen.generateToast("No previous records.", ClientScript);
+                        return;
+                    }
+                    profitStart -= 50;
+                    profitEnd -= 50;
+                    loadProfitTable();
+                    break;
+            }
+        }
+
+
         public void loadUsersTable()
         {
+            if (UsersTable != null)
+            {
+                UsersTable.Rows.Clear();
+                UsersTable.Controls.Clear();
+            }
+
             // Set Headers for table
             setUsersHeaders();
-            List<User> users = DB.getAllUsers(0, 50);
+            List<User> users = DB.getAllUsers(userStart, userEnd);
             foreach (User user in users)
             {
                 user.wallet = Wallet.getWalletByUserId(user.id);
@@ -42,7 +145,13 @@ namespace EZMoney
 
         public void loadTransactionTable()
         {
-            List<Transaction> transactions = DB.getAllUserTransactions(0, 50);
+            if (TransactionsTable != null)
+            {
+                TransactionsTable.Rows.Clear();
+                TransactionsTable.Controls.Clear();
+            }
+
+            List<Transaction> transactions = DB.getAllUserTransactions(transactionStart, transactionEnd);
 
             TransactionsTable.Controls.Add(setHeaders());
 
@@ -54,7 +163,13 @@ namespace EZMoney
 
         public void loadProfitTable()
         {
-            List<Profit> profits = DB.getAllProfits(0, 50);
+            if (ProfitsTable != null)
+            {
+                ProfitsTable.Rows.Clear();
+                ProfitsTable.Controls.Clear();
+            }
+
+            List<Profit> profits = DB.getAllProfits(profitStart, profitEnd);
 
             setProfitHeaders();
 
@@ -120,7 +235,7 @@ namespace EZMoney
             tc3.Controls.Add(new LiteralControl("<span>" + user.lastName + "</span>"));
             tc4.Controls.Add(new LiteralControl("<span>" + user.email + "</span>"));
             tc5.Controls.Add(new LiteralControl("<span>" + user.phoneNumber + "</span>"));
-            tc6.Controls.Add(new LiteralControl("<span>$" + user.wallet.currentAmount + "</span>"));
+            tc6.Controls.Add(new LiteralControl("<span>" + String.Format("{0:C2}", user.wallet.currentAmount) + "</span>"));
             tc7.Controls.Add(new LiteralControl("<span>" + (user.isAdmin ? "Yes" : "No") + "</span>"));
             tc8.Controls.Add(new LiteralControl("<span>" + (user.deleted ? "Yes" : "No") + "</span>"));
 
@@ -178,7 +293,7 @@ namespace EZMoney
             tc0.Controls.Add(new LiteralControl("<span>" + tx.id + "</span>"));
             tc1.Controls.Add(new LiteralControl("<span>" + tx.toUserId + "</span>"));
             tc2.Controls.Add(new LiteralControl("<span>" + tx.fromUserId + "</span>"));
-            tc3.Controls.Add(new LiteralControl("<span>" + tx.amount + "</span>"));
+            tc3.Controls.Add(new LiteralControl("<span>" + String.Format("{0:C2}", tx.amount) + "</span>"));
             tc4.Controls.Add(new LiteralControl("<span>" + tx.transactionDate + "</span>"));
             tc5.Controls.Add(new LiteralControl("<span>" + tx.memo + "</span>"));
 
@@ -222,7 +337,7 @@ namespace EZMoney
             TableCell tc3 = new TableCell();
 
             tc0.Controls.Add(new LiteralControl("<span>" + profit.id + "</span>"));
-            tc1.Controls.Add(new LiteralControl("<span>" + profit.profitAmount + "</span>"));
+            tc1.Controls.Add(new LiteralControl("<span>" + String.Format("{0:C2}", profit.profitAmount) + "</span>"));
             tc2.Controls.Add(new LiteralControl("<span>" + profit.profitDate + "</span>"));
             tc3.Controls.Add(new LiteralControl("<span>" + (profit.refunded ? "Yes" : "No") + "</span>"));
 

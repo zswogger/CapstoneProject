@@ -81,7 +81,7 @@ namespace EZMoney.Models
             conn.Open();
 
             MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
-            cmd.CommandText = "SELECT id, username, firstName, lastName, phoneNumber, emailAddress, isAdmin FROM users WHERE username = '" + username + "' AND password = '" + password + "';";
+            cmd.CommandText = "SELECT id, username, firstName, lastName, phoneNumber, emailAddress, isAdmin FROM users WHERE username = '" + username + "' AND password = '" + password + "' AND deleted = 0;";
 
             MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
             while (rdr.Read())
@@ -168,6 +168,87 @@ namespace EZMoney.Models
                 }
             }
             return user;
+        }
+
+        public static bool checkPassword(string password)
+        {
+            using (MySqlConnection con = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand cmd = new MySqlCommand("checkPassword", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.Add("passToCheck", MySqlDbType.VarChar).Value = password;
+                    cmd.Parameters.Add("userIdToCheck", MySqlDbType.Int64).Value = Global.sessionUser.id;
+
+                    con.Open();
+                    MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
+                    if (rdr.HasRows)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        public static bool updateUser(User user)
+        {
+            bool success = false;
+            using (MySqlConnection con = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand cmd = new MySqlCommand("updateUser", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.Add("idToCheck", MySqlDbType.Int64).Value = Global.sessionUser.id;
+                    cmd.Parameters.Add("FirstName", MySqlDbType.VarChar).Value = user.firstName;
+                    cmd.Parameters.Add("LastName", MySqlDbType.VarChar).Value = user.lastName;
+                    cmd.Parameters.Add("PhoneNumber", MySqlDbType.VarChar).Value = user.phoneNumber;
+                    cmd.Parameters.Add("Email", MySqlDbType.VarChar).Value = user.email;
+
+                    con.Open();
+                    success = cmd.ExecuteNonQuery() > 0;
+                }
+            }
+            return success;
+        }
+
+        public static bool updatePassword(string password)
+        {
+            bool success = false;
+            using (MySqlConnection con = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand cmd = new MySqlCommand("updatePassword", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.Add("idToCheck", MySqlDbType.Int64).Value = Global.sessionUser.id;
+                    cmd.Parameters.Add("newPass", MySqlDbType.VarChar).Value = password;
+
+                    con.Open();
+                    success = cmd.ExecuteNonQuery() > 0;
+                }
+            }
+            return success;
+        }
+
+        public static bool deleteUser(int userId)
+        {
+            bool success = false;
+            using (MySqlConnection con = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand cmd = new MySqlCommand("deleteUser", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.Add("idToCheck", MySqlDbType.Int64).Value = userId;
+
+                    con.Open();
+                    success = cmd.ExecuteNonQuery() > 0;
+                }
+            }
+            return success;
         }
         #endregion
 

@@ -13,7 +13,7 @@
     </asp:PlaceHolder>
 
     <webopt:bundlereference runat="server" path="~/Content/css" />
-    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link href="/Content/Images/dollar-bill.png" rel="shortcut icon" type="image/x-icon" />
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
@@ -43,7 +43,8 @@
             <a href="/Login" class="mr-3"><img src="/Content/Images/dollar-bill.png" alt="dolla dolla bill yall" style="height: 35px; width: 35px;"><span>EZ-Money</span></a>
             <p style="display: inline; color: var(--accent)"> | </p>
             <a class="nav-item" href="/Login">Login</a><p style="display: inline; color: var(--accent)"> | </p>
-            <a class="nav-item" href="/Register">Register</a>
+            <a class="nav-item" href="/Register">Register</a><p style="display: inline; color: var(--accent)"> | </p>
+            <a class="nav-item" href="/About">About</a>
         </div>
         <hr style="margin-top:0px"/>
         <div class="container body-content">
