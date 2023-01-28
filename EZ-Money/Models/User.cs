@@ -101,6 +101,11 @@ namespace EZMoney.Models
             return DB.getUserByUsername(username);
         }
 
+        public static bool checkPassword(string password)
+        {
+            return DB.checkPassword(password);
+        }
+
         /// <summary>
         /// Save the user in the database
         /// </summary>
@@ -116,7 +121,12 @@ namespace EZMoney.Models
         /// </summary>
         public static bool update(User user)
         {
-            return true;
+            return DB.updateUser(user);
+        }
+
+        public static bool updatePassword(string password)
+        {
+            return DB.updatePassword(password);
         }
 
         /// <summary>
@@ -124,7 +134,7 @@ namespace EZMoney.Models
         /// </summary>
         public static bool delete(int id)
         {
-            return true;
+            return DB.deleteUser(id);
         }
     }
 }

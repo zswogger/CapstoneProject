@@ -10,6 +10,7 @@ using System.Data;
 using System.Text;
 using MySqlX.XDevAPI.Relational;
 using System.Security.Cryptography;
+using Org.BouncyCastle.Asn1.X509;
 
 namespace EZMoney
 {
@@ -31,19 +32,19 @@ namespace EZMoney
 
         public void loadUserTransactions()
         {
-            List<Transaction> transactions = DB.getUserTransactions(Global.sessionUser.id);
+            List<Transaction> SortedList = DB.getUserTransactions(Global.sessionUser.id).OrderByDescending(o => o.id).ToList();
 
             TransactionsTable.Controls.Add(setHeaders());
 
-            for (int i = 0; i < transactions.Count; i++)
+            for (int i = 0; i < SortedList.Count; i++)
             {
                 string toUser = "";
-                bool sent = transactions[i].toUserId == Global.sessionUser.id;
+                bool sent = SortedList[i].toUserId == Global.sessionUser.id;
                 string txType = sent == true ? "Receive" : "Send";
 
                 if (sent == true)
                 {
-                    toUser = DB.getUserById(transactions[i].fromUserId).username;
+                    toUser = DB.getUserById(SortedList[i].fromUserId).username;
                 }
 
                 TableRow tr = new TableRow();
@@ -54,12 +55,12 @@ namespace EZMoney
                 TableCell tc4 = new TableCell();
                 TableCell tc5 = new TableCell();
 
-                tc0.Controls.Add(new LiteralControl("<span>" + transactions[i].id.ToString() + "</span>"));
+                tc0.Controls.Add(new LiteralControl("<span>" + SortedList[i].id.ToString() + "</span>"));
                 tc1.Controls.Add(new LiteralControl("<span>" + (sent == true ? toUser : Global.sessionUser.username) + "</span>"));
                 tc4.Controls.Add(new LiteralControl("<span>" + txType + "</span>"));
-                tc2.Controls.Add(new LiteralControl("<span>" + transactions[i].amount.ToString() + "</span>"));
-                tc3.Controls.Add(new LiteralControl("<span>" + transactions[i].transactionDate.ToString() + "</span>"));
-                tc5.Controls.Add(new LiteralControl("<span>" + transactions[i].memo.ToString() + "</span>"));
+                tc2.Controls.Add(new LiteralControl("<span>" + String.Format("{0:C2}", SortedList[i].amount) + "</span>"));
+                tc3.Controls.Add(new LiteralControl("<span>" + SortedList[i].transactionDate.ToString() + "</span>"));
+                tc5.Controls.Add(new LiteralControl("<span>" + SortedList[i].memo.ToString() + "</span>"));
 
                 tr.Controls.Add(tc0);
                 tr.Controls.Add(tc4);
@@ -102,8 +103,7 @@ namespace EZMoney
         public void getWalletBalance()
         {
             Global.sessionUser.wallet = DB.getUserWallet(Global.sessionUser.id);
-            string formatted = Global.sessionUser.wallet.currentAmount.ToString();
-            walletBalance.InnerText = "Current Balance: $" + formatted;
+            walletBalance.InnerText = "Current Balance: " + String.Format("{0:C2}", Global.sessionUser.wallet.currentAmount);
         }
 
     }

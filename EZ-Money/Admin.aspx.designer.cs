@@ -15,6 +15,24 @@ namespace EZMoney
     {
 
         /// <summary>
+        /// prevUser control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button prevUser;
+
+        /// <summary>
+        /// nextUser control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button nextUser;
+
+        /// <summary>
         /// UsersTable control.
         /// </summary>
         /// <remarks>
@@ -24,6 +42,24 @@ namespace EZMoney
         protected global::System.Web.UI.WebControls.Table UsersTable;
 
         /// <summary>
+        /// prevTransaction control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button prevTransaction;
+
+        /// <summary>
+        /// nextTransaction control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button nextTransaction;
+
+        /// <summary>
         /// TransactionsTable control.
         /// </summary>
         /// <remarks>
@@ -31,6 +67,24 @@ namespace EZMoney
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Table TransactionsTable;
+
+        /// <summary>
+        /// prevProfit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button prevProfit;
+
+        /// <summary>
+        /// nextProfit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button nextProfit;
 
         /// <summary>
         /// ProfitsTable control.

@@ -78,6 +78,17 @@ body {
         border-color: var(--accent);
     }
 
+.btn-light-settings {
+    color: var(--text-color);
+    background-color: var(--accent);
+    margin-bottom: 10px;
+}
+
+    .btn-light-settings:hover {
+        background-color: var(--text-color) !important;
+        border-color: var(--accent);
+    }
+
 .nav-link {
     display: block;
     padding: 0.5rem 1rem;
@@ -211,4 +222,9 @@ table, th, td {
     border: 1px solid #ccc;
     border-top: none;
     color: var(--text-color);
+}
+
+.active {
+    background-color: var(--accent) !important;
+    color: black;
 }
