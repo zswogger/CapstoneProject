@@ -59,6 +59,8 @@ body {
     border-color: var(--accent);
     color: var(--text-color);
     margin-bottom: 10px !important;
+    margin-top: 10px;
+    width: 80px;
 }
 
     .btn-primary-dashboard:hover {
@@ -70,6 +72,8 @@ body {
 .btn-light-dashboard {
     color: var(--dark-background-color);
     margin-bottom: 10px !important;
+    width: 80px;
+    margin-top: 10px;
 }
 
     .btn-light-dashboard:hover {
@@ -174,8 +178,15 @@ table, th, td {
 .lock-right {
     color: var(--accent);
     margin-top: 5px;
-    position: fixed;
+    position: absolute;
     right: 35px;
+}
+
+.logout {
+    top: 15px;
+    right: 20px;
+    position: absolute;
+    color: var(--accent) !important;
 }
 
 /*Modal*/
@@ -224,7 +235,46 @@ table, th, td {
     color: var(--text-color);
 }
 
+
 .active {
     background-color: var(--accent) !important;
     color: black;
+}
+
+.searchBox {
+    color: black;
+}
+    .searchBox:focus {
+        box-shadow:  0px 0px 3px 3px var(--accent);
+    }
+
+.fa-envelope, .fa-envelope-open {
+    color: var(--accent);
+}
+    .fa-envelope:hover {
+        cursor: pointer;
+        color: white;
+    }
+
+.badge {
+    padding-left: 9px;
+    padding-right: 9px;
+    -webkit-border-radius: 9px;
+    -moz-border-radius: 9px;
+    border-radius: 9px;
+}
+
+.label-warning[href],
+.badge-warning[href] {
+    background-color: #c67605;
+}
+
+#requestCount {
+    font-size: 12px;
+    background: #ff0000;
+    color: #fff;
+    padding: 0 5px;
+    position: absolute;
+    bottom: 0px;
+    right: 25px;
 }

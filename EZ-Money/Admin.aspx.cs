@@ -43,18 +43,21 @@ namespace EZMoney
                     userEnd += 50;
                     checkPage(userStart, userEnd, 0);
                     loadUsersTable();
+                    tabSelector.Value = "0";
                     break;
 
                 case "nextTransaction":
                     transactionStart += 50;
                     transactionEnd += 50;
                     loadTransactionTable();
+                    tabSelector.Value = "1";
                     break;
 
                 case "nextProfit":
                     profitStart += 50;
                     profitEnd += 50;
                     loadProfitTable();
+                    tabSelector.Value = "2";
                     break;
             }
         }
@@ -98,6 +101,7 @@ namespace EZMoney
                     userEnd -= 50;
                     checkPage(userStart, userEnd, 0);
                     loadUsersTable();
+                    tabSelector.Value = "0";
                     break;
 
                 case "prevTransaction":
@@ -109,6 +113,7 @@ namespace EZMoney
                     transactionStart -= 50;
                     transactionEnd -= 50;
                     loadTransactionTable();
+                    tabSelector.Value = "1";
                     break;
 
                 case "prevProfit":
@@ -120,12 +125,63 @@ namespace EZMoney
                     profitStart -= 50;
                     profitEnd -= 50;
                     loadProfitTable();
+                    tabSelector.Value = "2";
                     break;
             }
         }
 
+        public void searchUserName(Object sender, EventArgs e)
+        {
+            string username = SearchUsername.Text;
+            
+            if (username != "")
+            {
+                User user = DB.getUserByUsername(username);
+                if (user != null)
+                {
+                    List<User> users = new List<User>() { user };
+                    loadUsersTable(users);
+                    SearchUsername.Text = "";
+                }
+                else
+                {
+                    gen.generateToast("Could not find a user with that name", ClientScript);
+                    loadUsersTable();
+                }
+            }
+            else
+            {
+                loadUsersTable();
+            }
+            tabSelector.Value = "0";
+        }
 
-        public void loadUsersTable()
+        public void searchTxUsername(Object sender, EventArgs e)
+        {
+            if(SearchTxUsername.Text != "")
+            {
+                User user = DB.getUserByUsername(SearchTxUsername.Text);
+                if (user != null)
+                {
+                    List<Transaction> SortedList = DB.getUserTransactions(user.id).OrderByDescending(o => o.id).ToList();
+                    loadTransactionTable(SortedList);
+                }
+                else
+                {
+                    gen.generateToast("Could not find a user with that name", ClientScript);
+                    loadTransactionTable();
+                }
+            }
+            else
+            {
+                loadTransactionTable();
+            }
+            SearchTxUsername.Text = "";
+            tabSelector.Value = "1";
+        }
+
+
+        public void loadUsersTable(List<User> users = null)
         {
             if (UsersTable != null)
             {
@@ -135,7 +191,10 @@ namespace EZMoney
 
             // Set Headers for table
             setUsersHeaders();
-            List<User> users = DB.getAllUsers(userStart, userEnd);
+            if (users == null)
+            {
+                users = DB.getAllUsers(userStart, userEnd);
+            }
             foreach (User user in users)
             {
                 user.wallet = Wallet.getWalletByUserId(user.id);
@@ -143,7 +202,7 @@ namespace EZMoney
             }
         }
 
-        public void loadTransactionTable()
+        public void loadTransactionTable(List<Transaction> transactions = null)
         {
             if (TransactionsTable != null)
             {
@@ -151,7 +210,10 @@ namespace EZMoney
                 TransactionsTable.Controls.Clear();
             }
 
-            List<Transaction> transactions = DB.getAllUserTransactions(transactionStart, transactionEnd);
+            if (transactions == null)
+            {
+                transactions = DB.getAllUserTransactions(transactionStart, transactionEnd);
+            }
 
             TransactionsTable.Controls.Add(setHeaders());
 
@@ -163,6 +225,7 @@ namespace EZMoney
 
         public void loadProfitTable()
         {
+            decimal totalProfit = 0;
             if (ProfitsTable != null)
             {
                 ProfitsTable.Rows.Clear();
@@ -176,7 +239,9 @@ namespace EZMoney
             foreach (Profit profit in profits)
             {
                 setProfitInfo(profit);
+                totalProfit += profit.profitAmount;
             }
+            TotalProfit.Text = "Total Profit On Page: " + totalProfit.ToString();
         }
 
         public void setUsersHeaders()
@@ -204,10 +269,10 @@ namespace EZMoney
             h8.Controls.Add(new LiteralControl("<span>Deleted</span>"));
 
             headers.Controls.Add(h0);
-            headers.Controls.Add(h4);
             headers.Controls.Add(h1);
             headers.Controls.Add(h2);
             headers.Controls.Add(h3);
+            headers.Controls.Add(h4);
             headers.Controls.Add(h5);
             headers.Controls.Add(h6);
             headers.Controls.Add(h7);
@@ -261,6 +326,7 @@ namespace EZMoney
             TableHeaderCell h4 = new TableHeaderCell();
             TableHeaderCell h5 = new TableHeaderCell();
             TableHeaderCell h6 = new TableHeaderCell();
+            TableHeaderCell h7 = new TableHeaderCell();
 
             h0.Controls.Add(new LiteralControl("<span>Transaction ID</span>"));
             h1.Controls.Add(new LiteralControl("<span>To</span>"));
@@ -268,6 +334,7 @@ namespace EZMoney
             h4.Controls.Add(new LiteralControl("<span>Amount</span>"));
             h5.Controls.Add(new LiteralControl("<span>Transaction Date</span>"));
             h6.Controls.Add(new LiteralControl("<span>Memo</span>"));
+            h7.Controls.Add(new LiteralControl("<span>Status</span>"));
 
             headers.Controls.Add(h0);
             headers.Controls.Add(h1);
@@ -275,6 +342,7 @@ namespace EZMoney
             headers.Controls.Add(h4);
             headers.Controls.Add(h5);
             headers.Controls.Add(h6);
+            headers.Controls.Add(h7);
 
             return headers;
         }
@@ -289,13 +357,27 @@ namespace EZMoney
             TableCell tc3 = new TableCell();
             TableCell tc4 = new TableCell();
             TableCell tc5 = new TableCell();
+            TableCell tc6 = new TableCell();
 
             tc0.Controls.Add(new LiteralControl("<span>" + tx.id + "</span>"));
-            tc1.Controls.Add(new LiteralControl("<span>" + tx.toUserId + "</span>"));
-            tc2.Controls.Add(new LiteralControl("<span>" + tx.fromUserId + "</span>"));
+            tc1.Controls.Add(new LiteralControl("<span>(" + tx.toUserId + ") " + EZMoney.Models.User.getUserById(tx.toUserId).username + "</span>"));
+            tc2.Controls.Add(new LiteralControl("<span>(" + tx.fromUserId +") " + EZMoney.Models.User.getUserById(tx.fromUserId).username + "</span>"));
             tc3.Controls.Add(new LiteralControl("<span>" + String.Format("{0:C2}", tx.amount) + "</span>"));
             tc4.Controls.Add(new LiteralControl("<span>" + tx.transactionDate + "</span>"));
             tc5.Controls.Add(new LiteralControl("<span>" + tx.memo + "</span>"));
+
+            switch (tx.complete)
+            {
+                case 0:
+                    tc6.Controls.Add(new LiteralControl("<span>Complete</span>"));
+                    break;
+                case 1:
+                    tc6.Controls.Add(new LiteralControl("<span>Pending</span>"));
+                    break;
+                case 2:
+                    tc6.Controls.Add(new LiteralControl("<span>Denied</span>"));
+                    break;
+            }
 
             tr.Controls.Add(tc0);
             tr.Controls.Add(tc1);
@@ -303,6 +385,7 @@ namespace EZMoney
             tr.Controls.Add(tc3);
             tr.Controls.Add(tc4);
             tr.Controls.Add(tc5);
+            tr.Controls.Add(tc6);
 
             TransactionsTable.Controls.Add(tr);
         }
