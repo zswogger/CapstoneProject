@@ -6,34 +6,34 @@
             <div class="form-group">
                 <div class="col">
                     <span style="color: var(--accent);">Username</span><br />
-                    <asp:TextBox ID="UserName" Enabled="true" class="form-control my-2" runat="server" placeholder="Username" MaxLength="20" ></asp:TextBox>
+                    <asp:TextBox ID="UserName" Enabled="true" class="form-control searchBox my-2" runat="server" placeholder="Username" MaxLength="20" ></asp:TextBox>
                 </div>
             </div>
             <div class="form-group">
                 <div class="col">
                     <span style="color: var(--accent);">First Name</span>
-                    <asp:TextBox ID="FirstName" Enabled="true" class="form-control my-2" runat="server" placeholder="First Name" MaxLength="20"></asp:TextBox>
+                    <asp:TextBox ID="FirstName" Enabled="true" class="form-control searchBox my-2" runat="server" placeholder="First Name" MaxLength="20"></asp:TextBox>
                     <asp:RequiredFieldValidator ID="fname" runat="server" ControlToValidate="FirstName" ErrorMessage="Please enter a first name" ForeColor="Red" Display="Dynamic"></asp:RequiredFieldValidator>
                 </div>
             </div>
             <div class="form-group">
                 <div class="col">
                     <span style="color: var(--accent);">last Name</span>
-                    <asp:TextBox ID="LastName" Enabled="true" class="form-control my-2" runat="server" placeholder="Last Name" MaxLength="20"></asp:TextBox>
+                    <asp:TextBox ID="LastName" Enabled="true" class="form-control searchBox my-2" runat="server" placeholder="Last Name" MaxLength="20"></asp:TextBox>
                     <asp:RequiredFieldValidator ID="lname" runat="server" ControlToValidate="LastName" ErrorMessage="Please enter a last name" ForeColor="Red" Display="Dynamic"></asp:RequiredFieldValidator>
                 </div>
             </div>
             <div class="form-group">
                 <div class="col">
                     <span style="color: var(--accent);">Phone Number</span>
-                    <asp:TextBox ID="PhoneNumber" Enabled="true" class="form-control my-2" runat="server" placeholder="Phone Number" MaxLength="20"></asp:TextBox>
+                    <asp:TextBox ID="PhoneNumber" Enabled="true" class="form-control searchBox my-2" runat="server" placeholder="Phone Number" MaxLength="20"></asp:TextBox>
                     <asp:RequiredFieldValidator ID="phone" runat="server" ControlToValidate="PhoneNumber" ErrorMessage="Please enter a phone number" ForeColor="Red" Display="Dynamic"></asp:RequiredFieldValidator>
                 </div>
             </div>
             <div class="form-group">
                 <div class="col">
                     <span style="color: var(--accent);">Email</span>
-                    <asp:TextBox ID="Email" Enabled="true" class="form-control my-2" runat="server" placeholder="Email" MaxLength="20"></asp:TextBox>
+                    <asp:TextBox ID="Email" Enabled="true" class="form-control searchBox my-2" runat="server" placeholder="Email" MaxLength="20"></asp:TextBox>
                     <asp:RequiredFieldValidator ID="emailvalidate" runat="server" ControlToValidate="Email" ErrorMessage="Please enter an email address" ForeColor="Red" Display="Dynamic"></asp:RequiredFieldValidator>
                 </div>
             </div>
@@ -42,19 +42,19 @@
             <div class="form-group">
                 <div class="col">
                     <span style="color: var(--accent);">Old Password</span>
-                    <asp:TextBox ID="CurrentPass" Enabled="true" class="form-control my-2" runat="server" type="password" MaxLength="20" autocomplete="new-password"></asp:TextBox>
+                    <asp:TextBox ID="CurrentPass" Enabled="true" class="form-control searchBox my-2" runat="server" type="password" MaxLength="20" autocomplete="new-password"></asp:TextBox>
                 </div>
             </div>
             <div class="form-group">
                 <div class="col">
                     <span style="color: var(--accent);">New Password</span>
-                    <asp:TextBox ID="NewPass1" Enabled="true" class="form-control my-2" runat="server" type="password" MaxLength="20" autocomplete="new-password"></asp:TextBox>
+                    <asp:TextBox ID="NewPass1" Enabled="true" class="form-control searchBox my-2" runat="server" type="password" MaxLength="20" autocomplete="new-password"></asp:TextBox>
                 </div>
             </div>
             <div class="form-group">
                 <div class="col">
                     <span style="color: var(--accent);">Confirm Password</span>
-                    <asp:TextBox ID="NewPass2" Enabled="true" class="form-control my-2" runat="server" type="password" MaxLength="20" autocomplete="new-password"></asp:TextBox>
+                    <asp:TextBox ID="NewPass2" Enabled="true" class="form-control searchBox my-2" runat="server" type="password" MaxLength="20" autocomplete="new-password"></asp:TextBox>
                 </div>
             </div>
             <asp:Button class="btn btn-primary mb-2" CssClass="btn btn-light-settings full-button" OnClick="saveUser" runat="server" type="submit" ID="Save" Text="Save" />

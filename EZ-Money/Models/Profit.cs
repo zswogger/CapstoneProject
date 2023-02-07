@@ -30,6 +30,8 @@ namespace EZMoney.Models
         /// </summary>
         public int transactionId { get; set; }
 
+        public bool complete { get; set; }
+
         public Profit()
         {
 

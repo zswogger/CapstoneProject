@@ -139,7 +139,7 @@ namespace EZMoney.Models
 
         public static User getUserByUsername(string username)
         {
-            User user = new User();
+            User user = null;
             using (MySqlConnection con = new MySqlConnection(connectionString))
             {
                 using (MySqlCommand cmd = new MySqlCommand("getUserByUsername", con))
@@ -152,6 +152,7 @@ namespace EZMoney.Models
                     MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
                     if (rdr.HasRows)
                     {
+                        user = new User();
                         Console.WriteLine();
                         while (rdr.Read())
                         {
@@ -276,7 +277,7 @@ namespace EZMoney.Models
                         {
                             while (rdr.Read())
                             {
-                                transactions.Add(new Transaction(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2), rdr.GetDecimal(3), rdr.GetDecimal(4), rdr.GetString(5), rdr.GetString(6)));
+                                transactions.Add(new Transaction(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2), rdr.GetDecimal(3), rdr.GetDecimal(4), rdr.GetString(5), rdr.GetString(6), rdr.GetInt32(7)));
                             }
                             rdr.NextResult();
                         }
@@ -306,7 +307,7 @@ namespace EZMoney.Models
                         {
                             while(rdr.Read())
                             {
-                                transactions.Add(new Transaction(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2), rdr.GetDecimal(3), rdr.GetDecimal(4), rdr.GetString(5), rdr.GetString(6)));
+                                transactions.Add(new Transaction(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2), rdr.GetDecimal(3), rdr.GetDecimal(4), rdr.GetString(5), rdr.GetString(6), rdr.GetInt32(7)));
                             }
                             rdr.NextResult();
                         }
@@ -337,6 +338,107 @@ namespace EZMoney.Models
                 }
             }
             return success;
+        }
+
+        public static bool completeTransaction(Transaction tx)
+        {
+            bool success = false;
+            using (MySqlConnection con = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand cmd = new MySqlCommand("completeTransaction", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.Add("@txIdInc", MySqlDbType.Int32).Value = tx.id;
+                    cmd.Parameters.Add("@feeAmountInc", MySqlDbType.Decimal).Value = tx.profit.profitAmount;
+                    cmd.Parameters.Add("@transactionDateInc", MySqlDbType.VarChar).Value = tx.transactionDate;
+
+                    con.Open();
+                    success = cmd.ExecuteNonQuery() > 0;
+                }
+            }
+            return success;
+        }
+
+        public static bool denyTransaction(int id)
+        {
+            bool success = false;
+            using (MySqlConnection con = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand cmd = new MySqlCommand("denyTransaction", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.Add("idToCheck", MySqlDbType.Int32).Value = id;
+
+                    con.Open();
+                    success = cmd.ExecuteNonQuery() > 0;
+                }
+            }
+            return success;
+        }
+
+        public static List<Transaction> getPendingTransactions(int id)
+        {
+            List<Transaction> transactions = new List<Transaction>();
+            using (MySqlConnection con = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand cmd = new MySqlCommand("getPendingTransactions", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.Add("idToCheck", MySqlDbType.Int64).Value = id;
+
+                    con.Open();
+                    MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
+                    if (rdr.HasRows)
+                    {
+                        while (rdr.HasRows)
+                        {
+                            while (rdr.Read())
+                            {
+                                transactions.Add(new Transaction(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetInt32(2), rdr.GetDecimal(3), rdr.GetDecimal(4), rdr.GetString(5), rdr.GetString(6), rdr.GetInt32(7)));
+                            }
+                            rdr.NextResult();
+                        }
+                    }
+                }
+            }
+            return transactions;
+        }
+
+        public static Transaction getTransactionByID(int id)
+        {
+            Transaction tx = new Transaction();
+            using (MySqlConnection con = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand cmd = new MySqlCommand("getTransactionById", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.Add("idToCheck", MySqlDbType.Int64).Value = id;
+
+                    con.Open();
+                    MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
+                    if (rdr.HasRows)
+                    {
+                        while (rdr.HasRows)
+                        {
+                            while (rdr.Read())
+                            {
+                                tx.id = rdr.GetInt32(0);
+                                tx.fromUserId = rdr.GetInt32(1);
+                                tx.toUserId= rdr.GetInt32(2);
+                                tx.amount= rdr.GetDecimal(3);
+                                tx.memo = rdr.GetString(6);
+                                tx.complete = rdr.GetInt32(7);
+                            }
+                            rdr.NextResult();
+                        }
+                    }
+                }
+            }
+            return tx;
         }
 
         #endregion

@@ -15,6 +15,24 @@ namespace EZMoney
     {
 
         /// <summary>
+        /// SearchUsername control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox SearchUsername;
+
+        /// <summary>
+        /// uNameSearch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button uNameSearch;
+
+        /// <summary>
         /// prevUser control.
         /// </summary>
         /// <remarks>
@@ -40,6 +58,24 @@ namespace EZMoney
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Table UsersTable;
+
+        /// <summary>
+        /// SearchTxUsername control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox SearchTxUsername;
+
+        /// <summary>
+        /// Button1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button Button1;
 
         /// <summary>
         /// prevTransaction control.
@@ -69,6 +105,15 @@ namespace EZMoney
         protected global::System.Web.UI.WebControls.Table TransactionsTable;
 
         /// <summary>
+        /// TotalProfit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TotalProfit;
+
+        /// <summary>
         /// prevProfit control.
         /// </summary>
         /// <remarks>
@@ -94,5 +139,14 @@ namespace EZMoney
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Table ProfitsTable;
+
+        /// <summary>
+        /// tabSelector control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField tabSelector;
     }
 }

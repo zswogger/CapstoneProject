@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using EZMoney;
 
 namespace EZMoney.Models
@@ -34,12 +35,14 @@ namespace EZMoney.Models
 
         public string memo { get; set; }
 
+        public int complete {get; set; }
+
         public Transaction()
         {
 
         }
 
-        public Transaction(int id, int fromUserId, int toUserId, decimal amount, decimal profitAmount, string transactionDate, string memo)
+        public Transaction(int id, int fromUserId, int toUserId, decimal amount, decimal profitAmount, string transactionDate, string memo, int complete)
         {
             this.id = id;
             this.fromUserId = fromUserId;
@@ -48,10 +51,24 @@ namespace EZMoney.Models
             this.transactionDate = transactionDate;
             this.memo = memo;
             this.profit = new Profit();
-            this.profit.profitAmount= profitAmount;
+            this.profit.profitAmount = profitAmount;
+            this.complete = complete;
         }
 
+        public static bool denyTransaction(int id)
+        {
+            return DB.denyTransaction(id);
+        }
 
+        public static List<Transaction> getPendingTransactions(int id)
+        {
+            return DB.getPendingTransactions(id);
+        }
+
+        public static Transaction getTransationById(int id)
+        {
+            return DB.getTransactionByID(id);
+        }
 
         /// <summary>
         /// Save the transaction to the database
@@ -67,6 +84,11 @@ namespace EZMoney.Models
         public bool refund(int id)
         {
             return true;
+        }
+
+        public bool completeTransaction()
+        {
+            return DB.completeTransaction(this);
         }
     }
 }

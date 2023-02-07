@@ -1,9 +1,9 @@
-﻿<%@ Page Title="Send Money" Language="C#" MasterPageFile="~/LoggedIn.Master" AutoEventWireup="true" CodeBehind="SendMoney.aspx.cs" Inherits="EZMoney.SendMoney" %>
+﻿<%@ Page Title="Request Money" Language="C#" MasterPageFile="~/LoggedIn.Master" AutoEventWireup="true" CodeBehind="RequestMoney.aspx.cs" Inherits="EZ_Money.RequestMoney" %>
 
-<asp:Content ID="SendContent" ContentPlaceHolderID="MainContent" runat="server">
+<asp:Content ID="RequestContent" ContentPlaceHolderID="MainContent" runat="server">
     <div class="centered-div">
         <div class="boxed-form">
-            <h1 style="color: var(--accent); margin-top: 0px;">Send Money</h1>
+            <h1 style="color: var(--accent); margin-top: 0px;">Request Money</h1>
             <div class="centered-div">
                 <h3 id="walletBalance" style="margin-top: 0px; color: var(--text-color)" runat="server"></h3>
             </div>
@@ -24,7 +24,7 @@
                 </div>
             </div>
             <div class="centered-div">
-                <button id="send" value="Send" class="btn btn-primary mt-2 full-button" type="button">Send</button>
+                <button id="send" value="Send" class="btn btn-primary mt-2 full-button" type="button">Request</button>
             </div>
         </div>
     </div>
@@ -47,7 +47,7 @@
                     <span style="color: var(--accent);">Transaction Fee: </span><span id="txFee"></span>
                 </div>
                 <div class="modal-footer">
-                   <asp:Button class="btn btn-primary mt-2" CssClass="btn btn-primary" runat="server" type="submit" OnClick="sendTransaction" ID="sendConfirm" Text="Confirm" />
+                   <asp:Button class="btn btn-primary mt-2" CssClass="btn btn-primary" runat="server" type="submit" OnClick="requestTransaction" ID="sendConfirm" Text="Confirm" />
                     <button id="cancel" type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
                 </div>
             </div>

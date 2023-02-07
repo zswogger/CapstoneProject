@@ -7,39 +7,12 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace EZMoney
+namespace EZ_Money
 {
 
 
-    public partial class Dashboard
+    public partial class RequestMoney
     {
-
-        /// <summary>
-        /// welcome control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl welcome;
-
-        /// <summary>
-        /// usersName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl usersName;
-
-        /// <summary>
-        /// PendingTransactionsBadge control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField PendingTransactionsBadge;
 
         /// <summary>
         /// walletBalance control.
@@ -51,21 +24,48 @@ namespace EZMoney
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl walletBalance;
 
         /// <summary>
-        /// TransactionsTable control.
+        /// Username control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Table TransactionsTable;
+        protected global::System.Web.UI.WebControls.TextBox Username;
 
         /// <summary>
-        /// pendingTxData control.
+        /// uname control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pendingTxData;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator uname;
+
+        /// <summary>
+        /// Amount control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox Amount;
+
+        /// <summary>
+        /// Memo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox Memo;
+
+        /// <summary>
+        /// sendConfirm control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button sendConfirm;
     }
 }

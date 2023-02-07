@@ -17,6 +17,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://kit.fontawesome.com/a058632fb8.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <form runat="server">
@@ -45,9 +46,9 @@
             <a class="nav-item" href="/Dashboard">Dashboard</a><p style="display: inline; color: var(--accent)"> | </p>
             <a class="nav-item" href="/SendMoney">Send Money</a><p style="display: inline; color: var(--accent)"> | </p>
             <a class="nav-item" href="/RequestMoney">Request Money</a><p style="display: inline; color: var(--accent)"> | </p>
-            <a class="nav-item" href="/Settings">Settings</a><p style="display: inline; color: var(--accent)"> | </p>
-            <a class="nav-item" href="/Admin" runat="server" id="AdminLink" style="display: none;">Admin</a>
-            <a class="lock-right" href="/LogOut" runat="server">Log Out</a>
+            <a class="nav-item" href="/Settings">Settings</a>
+            <a class="nav-item" href="/Admin" runat="server" id="AdminLink" style="display: none;"><p style="display: inline; color: var(--accent)"> | </p>Admin</a>
+            <a class="logout" href="/LogOut" runat="server">Log Out</a>
         </div>
         <hr style="margin-top:0px"/>
         <div class="container body-content">
