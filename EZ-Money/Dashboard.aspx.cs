@@ -13,6 +13,7 @@ using System.Security.Cryptography;
 using Org.BouncyCastle.Asn1.X509;
 using System.Web.Services;
 using Microsoft.Ajax.Utilities;
+using System.Threading;
 
 namespace EZMoney
 {
@@ -29,14 +30,18 @@ namespace EZMoney
             
             welcome.InnerText = "Good " + gen.timeOfDay() + ", ";
             usersName.InnerText = Global.sessionUser.firstName + " " + Global.sessionUser.lastName;
+
+            getWalletBalance();
+            loadUserTransactions();
             if (!Page.IsPostBack)
             {
-                loadUserTransactions();
-                getWalletBalance();
                 getPendingTransactions();
             }
         }
 
+        /// <summary>
+        /// Loads the transactions for the current user and sets the table
+        /// </summary>
         public void loadUserTransactions()
         {
             List<Transaction> SortedList = DB.getUserTransactions(Global.sessionUser.id).OrderByDescending(o => o.id).ToList();
@@ -99,6 +104,10 @@ namespace EZMoney
             }
         }
 
+        /// <summary>
+        /// Set headers for user transaction table
+        /// </summary>
+        /// <returns></returns>
         public TableRow setHeaders()
         {
             TableRow headers = new TableRow();
@@ -128,12 +137,18 @@ namespace EZMoney
             return headers;
         }
 
+        /// <summary>
+        /// Get the wallet balance for the current user
+        /// </summary>
         public void getWalletBalance()
         {
             Global.sessionUser.wallet = DB.getUserWallet(Global.sessionUser.id);
             walletBalance.InnerText = "Current Balance: " + String.Format("{0:C2}", Global.sessionUser.wallet.currentAmount);
         }
 
+        /// <summary>
+        /// Get requested transactions for the current user
+        /// </summary>
         public void getPendingTransactions()
         {
             List<Transaction> pendingTransactions = Transaction.getPendingTransactions(Global.sessionUser.id);
@@ -154,6 +169,11 @@ namespace EZMoney
             }
         }
 
+        /// <summary>
+        /// Complete a requested transaction for the current user
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [WebMethod(EnableSession = true)]
         public static string completeTransaction(int id)
         {
@@ -166,12 +186,19 @@ namespace EZMoney
 
             // Get profit amount
             Profit profit = new Profit();
-            profit.profitAmount = profit.calculateProfit(tx);
-            profit.profitDate = DateTime.Now.ToString();
-            profit.refunded = false;
+            if (Company.getCompanyByUserId(tx.toUserId) != null)
+            {
+                profit.profitAmount = profit.calculateProfit(tx);
+                profit.profitDate = DateTime.Now.ToString();
+                profit.refunded = false;
+            }
+            else
+            {
+                profit.profitAmount = 0;
+            }
             tx.profit = profit;
 
-            if (Global.sessionUser.wallet.currentAmount < tx.amount + profit.profitAmount)
+            if (Global.sessionUser.wallet.currentAmount < tx.amount)
             {
                 return "You do not have enough funds to cover the transaction. Please deposit more funds and try again.";
             }
@@ -181,36 +208,47 @@ namespace EZMoney
             User toUser = EZMoney.Models.User.getUserById(tx.toUserId);
             toUser.wallet = Wallet.getWalletByUserId(toUser.id);
 
-            Global.sessionUser.wallet.currentAmount -= tx.amount + profit.profitAmount;
+            Global.sessionUser.wallet.currentAmount -= tx.amount;
+            if (profit.profitAmount > 0)
+            {
+                toUser.wallet.currentAmount -= profit.profitAmount;
+            }
             toUser.wallet.currentAmount += tx.amount;
 
             tx.complete = 1;
 
-            if (!profit.save())
+            if (profit.profitAmount > 0)
             {
-                webToast("Something went wrong saving profit!");
+                if (!profit.save())
+                {
+                    return "fail";
+                }
             }
 
             if (!tx.completeTransaction())
             {
-                webToast("Something went wrong saving transaction!");
+                return "fail";
             }
 
             if (!Global.sessionUser.wallet.saveCurrentBalance(Global.sessionUser.id, Global.sessionUser.wallet.currentAmount))
             {
-                webToast("Something went wrong saving wallet balance!");
+                return "fail";
             }
 
             if (!toUser.wallet.saveCurrentBalance(toUser.id, toUser.wallet.currentAmount))
             {
-                webToast("Something went wrong saving recipient wallet balance!");
+                return "fail";
             }
+            Thread.Sleep(2);
 
-            webToast(string.Format("Successfully sent ${0} to {1}",tx.amount, toUser.username));
             return "success";
         }
 
-
+        /// <summary>
+        /// Deny a requested transaction for the current user
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [WebMethod(EnableSession = true)]
         public static string denyTransaction(int id)
         {
@@ -223,20 +261,36 @@ namespace EZMoney
             return Transaction.denyTransaction(id) ? "Success" : "Failed";
         }
 
-        public static void webToast(string message)
+        protected void ConfirmFunds(Object sender, EventArgs e)
         {
-            var page = HttpContext.Current.CurrentHandler as Dashboard;
-
-            if (page != null)
+            if (Global.sessionUser == null)
             {
-                page.newToast(message);
+                Page.Response.Redirect("/Login", true);
+                return;
             }
-        }
+            Decimal.TryParse(Amount.Text, out Decimal amount);
+            if (depositSelector.Value == "true")
+            {
+                if (amount > 0)
+                {
+                    Global.sessionUser.wallet.currentAmount += amount;
+                    Global.sessionUser.wallet.saveCurrentBalance(Global.sessionUser.id, Global.sessionUser.wallet.currentAmount);
+                    
+                }
+                gen.generateToast("Successfully deposited funds!", ClientScript);
+            }
+            else
+            {
+                if (amount > 0)
+                {
+                    Global.sessionUser.wallet.currentAmount -= amount;
+                    Global.sessionUser.wallet.saveCurrentBalance(Global.sessionUser.id, Global.sessionUser.wallet.currentAmount);
+                    gen.generateToast("Successfully withdrew funds!", ClientScript);
+                }
+            }
 
-        public void newToast(string message)
-        {
-            General gen = new General();
-            gen.generateToast(message, ClientScript);
+            Page.Response.Redirect(Page.Request.Url.ToString(), true);
         }
     }
+
 }

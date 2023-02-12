@@ -10,6 +10,11 @@ namespace EZMoney
 {
     public partial class LogOut : System.Web.UI.Page
     {
+        /// <summary>
+        /// Log out the current user
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void Page_Load(object sender, EventArgs e)
         {
             Global.sessionUser= null;

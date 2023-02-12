@@ -14,9 +14,14 @@ namespace EZMoney
         General gen = new General();
         protected void Page_Load(object sender, EventArgs e)
         {
-            
+
         }
 
+        /// <summary>
+        /// Attempt to register a user based on provided information
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void registerUser(object sender, EventArgs e)
         {
             string firstName = FirstName.Text;
@@ -31,7 +36,7 @@ namespace EZMoney
             }
 
             string email = Email.Text;
-            if(!isValidEmail(email))
+            if (!isValidEmail(email))
             {
                 gen.generateToast("You must enter a valid email!", ClientScript);
                 return;
@@ -43,19 +48,37 @@ namespace EZMoney
                 return;
             }
 
-            string username = UserName.Text;
+            string username = UserName.Text.ToLower();
             //TODO: ADD VALIDATION FOR USERNAME AND PASSWORD!
 
             string password = Password.Text;
 
             User newUser = new User(firstName, lastName, stripped, email, username, password, false, false);
 
-            if(EZMoney.Models.User.save(newUser))
+            if (!EZMoney.Models.User.save(newUser))
             {
-                Response.Redirect("/Login");
+                gen.generateToast("Oops! Something went wrong! Please refresh and try again.", ClientScript);
+                return;
             }
+
+            Wallet wallet = new Wallet();
+            wallet.userId = EZMoney.Models.User.getUserByUsername(username).id;
+            wallet.currentAmount = 0;
+
+            if (!Wallet.saveNewWallet(wallet.userId))
+            {
+                gen.generateToast("Oops! Something went wrong! Please refresh and try again.", ClientScript);
+                return;
+            }
+
+            Response.Redirect("/Login");
         }
 
+        /// <summary>
+        /// Check if email is in a valid format
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
         private static bool isValidEmail(string email)
         {
             string regex = @"^[^@\s]+@[^@\s]+\.(com|net|org|gov)$";
@@ -63,6 +86,11 @@ namespace EZMoney
             return Regex.IsMatch(email, regex, RegexOptions.IgnoreCase);
         }
 
+        /// <summary>
+        /// Check if the given email is available
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
         public static bool emailAvailable(string email)
         {
             DB db = new DB();

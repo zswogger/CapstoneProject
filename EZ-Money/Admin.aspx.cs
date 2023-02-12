@@ -32,6 +32,11 @@ namespace EZMoney
             loadProfitTable();
         }
 
+        /// <summary>
+        /// Loads the next page of the given table
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void nextPage(object sender, EventArgs e)
         {
             Button btn = (Button)sender;
@@ -62,6 +67,12 @@ namespace EZMoney
             }
         }
 
+        /// <summary>
+        /// Ensures the current page is not less than 0
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="stop"></param>
+        /// <param name="tab"></param>
         public void checkPage(int start, int stop, int tab)
         {
             if (start <= 0 || stop < 50)
@@ -85,6 +96,11 @@ namespace EZMoney
             }
         }
 
+        /// <summary>
+        /// Pages back on the current table
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void prevPage(object sender, EventArgs e)
         {
             Button btn = (Button)sender;
@@ -130,6 +146,11 @@ namespace EZMoney
             }
         }
 
+        /// <summary>
+        /// Search for a user by username
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void searchUserName(Object sender, EventArgs e)
         {
             string username = SearchUsername.Text;
@@ -156,6 +177,11 @@ namespace EZMoney
             tabSelector.Value = "0";
         }
 
+        /// <summary>
+        /// Search for transactions by username
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void searchTxUsername(Object sender, EventArgs e)
         {
             if(SearchTxUsername.Text != "")
@@ -180,7 +206,10 @@ namespace EZMoney
             tabSelector.Value = "1";
         }
 
-
+        /// <summary>
+        /// Loads the user table
+        /// </summary>
+        /// <param name="users"></param>
         public void loadUsersTable(List<User> users = null)
         {
             if (UsersTable != null)
@@ -202,6 +231,10 @@ namespace EZMoney
             }
         }
 
+        /// <summary>
+        /// Loads the transaction table
+        /// </summary>
+        /// <param name="transactions"></param>
         public void loadTransactionTable(List<Transaction> transactions = null)
         {
             if (TransactionsTable != null)
@@ -223,6 +256,9 @@ namespace EZMoney
             }
         }
 
+        /// <summary>
+        /// Loads the profit table
+        /// </summary>
         public void loadProfitTable()
         {
             decimal totalProfit = 0;
@@ -244,6 +280,9 @@ namespace EZMoney
             TotalProfit.Text = "Total Profit On Page: " + totalProfit.ToString();
         }
 
+        /// <summary>
+        /// Sets the headers for the user table
+        /// </summary>
         public void setUsersHeaders()
         {
 
@@ -281,6 +320,10 @@ namespace EZMoney
             UsersTable.Controls.Add(headers);
         }
 
+        /// <summary>
+        /// Sets the info for a row on the user table
+        /// </summary>
+        /// <param name="user"></param>
         public void setUserInfo(User user)
         {
             TableRow tr = new TableRow();
@@ -317,6 +360,10 @@ namespace EZMoney
             UsersTable.Controls.Add(tr);
         }
 
+        /// <summary>
+        /// Sets the headers for the transaction table
+        /// </summary>
+        /// <returns></returns>
         public TableRow setHeaders()
         {
             TableRow headers = new TableRow();
@@ -347,6 +394,10 @@ namespace EZMoney
             return headers;
         }
 
+        /// <summary>
+        /// Sets the data for a row on the transaction data
+        /// </summary>
+        /// <param name="tx"></param>
         public void setTransactionInfo(Transaction tx)
         {
 
@@ -369,10 +420,10 @@ namespace EZMoney
             switch (tx.complete)
             {
                 case 0:
-                    tc6.Controls.Add(new LiteralControl("<span>Complete</span>"));
+                    tc6.Controls.Add(new LiteralControl("<span>Pending</span>"));
                     break;
                 case 1:
-                    tc6.Controls.Add(new LiteralControl("<span>Pending</span>"));
+                    tc6.Controls.Add(new LiteralControl("<span>Complete</span>"));
                     break;
                 case 2:
                     tc6.Controls.Add(new LiteralControl("<span>Denied</span>"));
@@ -390,6 +441,9 @@ namespace EZMoney
             TransactionsTable.Controls.Add(tr);
         }
 
+        /// <summary>
+        /// Sets the headers for the profit table
+        /// </summary>
         public void setProfitHeaders()
         {
             TableRow headers = new TableRow();
@@ -411,6 +465,10 @@ namespace EZMoney
             ProfitsTable.Controls.Add(headers);
         }
 
+        /// <summary>
+        /// Sets the data for a row on the profit table
+        /// </summary>
+        /// <param name="profit"></param>
         public void setProfitInfo(Profit profit)
         {
             TableRow tr = new TableRow();

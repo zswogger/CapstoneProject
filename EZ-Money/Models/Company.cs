@@ -52,6 +52,11 @@
         /// </summary>
         public string ein { get; set; } = "";
 
+        /// <summary>
+        /// Associated user id
+        /// </summary>
+        public int userId { get; set; }
+
         public Company()
         {
 
@@ -69,6 +74,20 @@
             this.state = state;
             this.zip = zip;
             this.ein = ein;
+        }
+
+        /// <summary>
+        /// Register the company in the database
+        /// </summary>
+        /// <returns></returns>
+        public bool register()
+        {
+            return DB.registerCompany(this);
+        }
+
+        public static Company getCompanyByUserId(int userId)
+        {
+            return DB.getCompanyByUserId(userId);
         }
 
         /// <summary>

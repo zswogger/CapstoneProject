@@ -6,7 +6,7 @@
             <div class="form-group">
                 <div class="col">
                     <span style="color: var(--accent);">Username</span><br />
-                    <asp:TextBox ID="UserName" Enabled="true" class="form-control searchBox my-2" runat="server" placeholder="Username" MaxLength="20" ></asp:TextBox>
+                    <asp:TextBox ID="UserName" Enabled="true" class="form-control searchBox my-2" runat="server" placeholder="Username" MaxLength="50" ></asp:TextBox>
                 </div>
             </div>
             <div class="form-group">
@@ -33,7 +33,7 @@
             <div class="form-group">
                 <div class="col">
                     <span style="color: var(--accent);">Email</span>
-                    <asp:TextBox ID="Email" Enabled="true" class="form-control searchBox my-2" runat="server" placeholder="Email" MaxLength="20"></asp:TextBox>
+                    <asp:TextBox ID="Email" Enabled="true" class="form-control searchBox my-2" runat="server" placeholder="Email" MaxLength="50"></asp:TextBox>
                     <asp:RequiredFieldValidator ID="emailvalidate" runat="server" ControlToValidate="Email" ErrorMessage="Please enter an email address" ForeColor="Red" Display="Dynamic"></asp:RequiredFieldValidator>
                 </div>
             </div>

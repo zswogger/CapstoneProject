@@ -40,15 +40,20 @@ namespace EZMoney.Models
             return DB.getUserWallet(id);
         }
 
-        public string getWalletBalanceAsString()
-        {
-            Global.sessionUser.wallet = DB.getUserWallet(Global.sessionUser.id);
-            return Global.sessionUser.wallet.currentAmount.ToString();
-        }
-
+        /// <summary>
+        /// Saves the current balance of the users wallet
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="currentAmount"></param>
+        /// <returns></returns>
         public bool saveCurrentBalance(int id, decimal currentAmount)
         {
             return DB.saveWalletBalance(id, currentAmount);
+        }
+
+        public static bool saveNewWallet(int userId)
+        {
+            return DB.saveNewWallet(userId);
         }
 
     }

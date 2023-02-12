@@ -9,7 +9,7 @@
             </div>
             <div class="form-group">
                 <div class="col">
-                    <asp:TextBox ID="Username" Enabled="true" class="form-control my-2" runat="server" placeholder="Username" MaxLength="20"></asp:TextBox>
+                    <asp:TextBox ID="Username" Enabled="true" class="form-control my-2" runat="server" placeholder="Username" MaxLength="50"></asp:TextBox>
                     <asp:RequiredFieldValidator ID="uname" runat="server" ControlToValidate="Username" ErrorMessage="Please enter a username" ForeColor="Red" Display="Dynamic"></asp:RequiredFieldValidator>
                 </div>
             </div>
@@ -44,7 +44,9 @@
                     <span style="color: var(--accent);">Username: </span><span id="checkUserName"></span><br />
                     <span style="color: var(--accent);">Amount: </span><span id="checkAmount"></span><br />
                     <span style="color: var(--accent);">Memo: </span><span id="checkMemo"></span><br />
-                    <span style="color: var(--accent);">Transaction Fee: </span><span id="txFee"></span>
+                    <asp:Panel ID="feePanel" runat="server" Visible="false">
+                        <span style="color: var(--accent);">Transaction Fee: </span><span id="txFee"></span>
+                    </asp:Panel>
                 </div>
                 <div class="modal-footer">
                    <asp:Button class="btn btn-primary mt-2" CssClass="btn btn-primary" runat="server" type="submit" OnClick="requestTransaction" ID="sendConfirm" Text="Confirm" />
