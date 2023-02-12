@@ -31,9 +31,7 @@ Here is where you can change the information associated with your account, chang
 ![image](https://user-images.githubusercontent.com/90625866/218322079-f21d5a4c-de3e-44cb-9f26-33c8e5bafc1d.png)
 ## Admin Guide
 Login as an authorized administrator and click the "Admin" link that is now present in the navigation bar.
-Here you can see 3 different tables. Users, transactions, and profits. You can search the users and transactions tables by username and the profits table will calculate the total amount of profits on the page. Ideally, these reporting features will be fleshed out more in future iterations to include more searching options, refunding transactions, and editing users.
+Here you can see 3 different tables. Users, transactions, and profits. You can search the users and transactions tables by username and the profits table will calculate the total amount of profits on the page. Ideally, these reporting features will be fleshed out more in future iterations to include more searching options, refunding transactions, and editing and suspending users as well as promoting users to admins.
 ![image](https://user-images.githubusercontent.com/90625866/218323152-752b1553-d30f-4b36-9545-d97113f560ea.png)
 ![image](https://user-images.githubusercontent.com/90625866/218323162-817cf0a9-468f-4357-9e4d-eedf5512ac72.png)
 ![image](https://user-images.githubusercontent.com/90625866/218323179-87a8ecfc-5eeb-4770-af2d-9a63a47a0a90.png)
-
-
