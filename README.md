@@ -28,5 +28,5 @@ Every box except for “Address 2” is required. If a box is not filled out, yo
 ## Settings
 Here is where you can change the information associated with your account, change your password, and delete your account. Please note that deleting your account will make you ineligible to sign up using the same email address.
 ![image](https://user-images.githubusercontent.com/90625866/218321038-90645910-6884-4b0c-a9ad-95912a78ff1b.png)
-  
+![image](https://user-images.githubusercontent.com/90625866/218322079-f21d5a4c-de3e-44cb-9f26-33c8e5bafc1d.png)
 ## Admin Guide
