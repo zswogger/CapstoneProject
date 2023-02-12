@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Register.aspx.cs" Inherits="EZMoney.Register" %>
+﻿<%@ Page Title="Register" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Register.aspx.cs" Inherits="EZMoney.Register" %>
 
 <asp:Content ID="registerContent" ContentPlaceHolderID="MainContentNotLoggedIn" runat="server">
     <div class="centered-div">
@@ -26,13 +26,13 @@
             </div>
             <div class="form-group">
                 <div class="col">
-                    <asp:TextBox ID="Email" Enabled="true" class="form-control my-2" runat="server" placeholder="Email" MaxLength="20"></asp:TextBox>
+                    <asp:TextBox ID="Email" Enabled="true" class="form-control my-2" runat="server" placeholder="Email" MaxLength="50"></asp:TextBox>
                     <asp:RequiredFieldValidator ID="emailvalidate" runat="server" ControlToValidate="Email" ErrorMessage="Please enter an email address" ForeColor="Red" Display="Dynamic"></asp:RequiredFieldValidator>
                 </div>
             </div>
             <div class="form-group">
                 <div class="col">
-                    <asp:TextBox ID="UserName" Enabled="true" class="form-control my-2" runat="server" placeholder="Username" MaxLength="20"></asp:TextBox>
+                    <asp:TextBox ID="UserName" Enabled="true" class="form-control my-2" runat="server" placeholder="Username" MaxLength="50"></asp:TextBox>
                     <asp:RequiredFieldValidator ID="uname" runat="server" ControlToValidate="UserName" ErrorMessage="Please enter a user name" ForeColor="Red" Display="Dynamic"></asp:RequiredFieldValidator>
                 </div>
             </div>

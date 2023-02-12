@@ -1,5 +1,4 @@
-﻿
-using EZMoney.Models;
+﻿using EZMoney.Models;
 using System;
 using EZMoney;
 using System.Collections.Generic;
@@ -63,11 +62,15 @@ namespace EZMoney
 
                 // Generate profit
                 Profit profit = new Profit();
-                profit.profitAmount = profit.calculateProfit(tx);
-                profit.profitDate = DateTime.Now.ToString();
-                profit.refunded = false;
-                tx.profit = profit;
+                if (Company.getCompanyByUserId(toUser.id) != null)
+                {
+                    profit.profitAmount = profit.calculateProfit(tx);
+                    profit.profitDate = DateTime.Now.ToString();
+                    profit.refunded = false;
 
+                }
+
+                tx.profit = profit;
                 //Validate user can cover amount
                 if (Global.sessionUser.wallet.currentAmount < amount + profit.profitAmount)
                 {
@@ -83,14 +86,27 @@ namespace EZMoney
                     tx.memo = Memo.Text;
                 }
 
-                Global.sessionUser.wallet.currentAmount -= amount + profit.profitAmount;
+                Global.sessionUser.wallet.currentAmount -= amount;
                 toUser.wallet.currentAmount += amount;
 
-                if (!profit.save())
+                if (profit.id != 0)
                 {
-                    gen.generateToast("Something went wrong saving profit!", ClientScript);
+                    toUser.wallet.currentAmount -= profit.profitAmount;
                 }
 
+
+                if (profit.id != 0)
+                {
+                    if (!profit.save())
+                    {
+                        gen.generateToast("Something went wrong saving profit!", ClientScript);
+                    }
+                }
+                else
+                {
+                    profit.profitAmount = 0;
+                }
+                tx.complete = 1;
                 if (!tx.save())
                 {
                     gen.generateToast("Something went wrong saving transaction!", ClientScript);
@@ -109,6 +125,7 @@ namespace EZMoney
                 gen.generateToast("Successfully sent $" + tx.amount.ToString() + " to " + toUser.username, ClientScript); ;
                 getWalletBalance();
                 cleanControls();
+                Page.Response.Redirect(Page.Request.Url.ToString(), true);
             }
             catch (Exception ex)
             {

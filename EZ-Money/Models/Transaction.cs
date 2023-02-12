@@ -55,16 +55,31 @@ namespace EZMoney.Models
             this.complete = complete;
         }
 
+        /// <summary>
+        /// Denies a requested transaction
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static bool denyTransaction(int id)
         {
             return DB.denyTransaction(id);
         }
 
+        /// <summary>
+        /// Gets a users pending transactions
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static List<Transaction> getPendingTransactions(int id)
         {
             return DB.getPendingTransactions(id);
         }
 
+        /// <summary>
+        /// Returns a transaction based on transaction id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static Transaction getTransationById(int id)
         {
             return DB.getTransactionByID(id);
@@ -86,6 +101,10 @@ namespace EZMoney.Models
             return true;
         }
 
+        /// <summary>
+        /// Completes a pending transaction
+        /// </summary>
+        /// <returns></returns>
         public bool completeTransaction()
         {
             return DB.completeTransaction(this);

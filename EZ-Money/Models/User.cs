@@ -91,16 +91,37 @@ namespace EZMoney.Models
 
         }
 
+        /// <summary>
+        /// Returns a user based on user id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static User getUserById(int id)
         {
-            return DB.getUserById(id);
+            User user = DB.getUserById(id);
+            if (user != null)
+            {
+                user.wallet = Wallet.getWalletByUserId(user.id);
+                user.company = Company.getCompanyByUserId(user.id);
+            }
+            return user;
         }
 
+        /// <summary>
+        /// Returns a user based on username
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
         public static User getUserByUsername(string username)
         {
             return DB.getUserByUsername(username);
         }
 
+        /// <summary>
+        /// Determines if the given password matches the password on record
+        /// </summary>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public static bool checkPassword(string password)
         {
             return DB.checkPassword(password);
@@ -124,6 +145,11 @@ namespace EZMoney.Models
             return DB.updateUser(user);
         }
 
+        /// <summary>
+        /// Updates the current users password
+        /// </summary>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public static bool updatePassword(string password)
         {
             return DB.updatePassword(password);

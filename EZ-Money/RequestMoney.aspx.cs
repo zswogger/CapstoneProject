@@ -17,9 +17,19 @@ namespace EZ_Money
             {
                 Response.Redirect("/Login");
             }
+
+            if (Global.sessionUser.company != null)
+            {
+                feePanel.Visible = true;
+            }
             getWalletBalance();
         }
 
+        /// <summary>
+        /// Trigger a request transaction
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void requestTransaction(object sender, EventArgs e)
         {
             General gen = new General();
@@ -60,11 +70,8 @@ namespace EZ_Money
 
                 // Generate profit
                 Profit profit = new Profit();
-                profit.profitAmount = profit.calculateProfit(tx);
-                profit.profitDate = DateTime.Now.ToString();
-                profit.refunded = false;
                 tx.profit = profit;
-                profit.complete = false;
+                tx.profit = profit;
 
                 // Set tx date to right now
                 tx.transactionDate = DateTime.Now.ToString();
@@ -75,10 +82,6 @@ namespace EZ_Money
                     tx.memo = Memo.Text;
                 }
 
-                if (!profit.save())
-                {
-                    gen.generateToast("Something went wrong saving profit!", ClientScript);
-                }
                 tx.complete = 0;
                 if (!tx.save())
                 {
@@ -96,6 +99,9 @@ namespace EZ_Money
             }
         }
 
+        /// <summary>
+        /// Get wallet balance
+        /// </summary>
         public void getWalletBalance()
         {
             decimal balance = DB.getUserWallet(Global.sessionUser.id).currentAmount;
@@ -103,6 +109,9 @@ namespace EZ_Money
             walletBalance.InnerText = "Current Balance: $" + formatted;
         }
 
+        /// <summary>
+        /// Reset transaction controls
+        /// </summary>
         public void cleanControls()
         {
             Username.Text = "";

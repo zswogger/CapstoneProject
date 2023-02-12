@@ -16,6 +16,11 @@ namespace EZMoney
 
         }
 
+        /// <summary>
+        /// Attempt to login to the application
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void loginUser(object sender, EventArgs e)
         {
             DB db = new DB();

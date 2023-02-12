@@ -8,7 +8,7 @@
             </div>
             <div class="form-group">
                 <div class="col">
-                    <asp:TextBox ID="UserName" Enabled="true" class="form-control my-2" runat="server" placeholder="Username" MaxLength="20"></asp:TextBox>
+                    <asp:TextBox ID="UserName" Enabled="true" class="form-control my-2" runat="server" placeholder="Username" MaxLength="50"></asp:TextBox>
                     <asp:RequiredFieldValidator ID="uname" runat="server" ControlToValidate="UserName" ErrorMessage="Please enter a user name" ForeColor="Red" Display="Dynamic"></asp:RequiredFieldValidator>
                 </div>
             </div>

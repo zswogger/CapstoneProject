@@ -17,6 +17,12 @@ namespace EZMoney.Models
 
         #region User
 
+        /// <summary>
+        /// Return all users within start and stop range
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="stop"></param>
+        /// <returns></returns>
         public static List<User> getAllUsers(int start, int stop)
         {
             List<User> users = new List<User>();
@@ -48,6 +54,11 @@ namespace EZMoney.Models
             return users;
         }
 
+        /// <summary>
+        /// Save a user on registration
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public bool saveUser(User user)
         {
             bool success = false;
@@ -73,37 +84,57 @@ namespace EZMoney.Models
             return success;
         }
 
+        /// <summary>
+        /// Login user
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public static User loginUser(string username, string password)
         {
             User user = null;
-
-            MySqlConnection conn = new MySqlConnection(connectionString);
-            conn.Open();
-
-            MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
-            cmd.CommandText = "SELECT id, username, firstName, lastName, phoneNumber, emailAddress, isAdmin FROM users WHERE username = '" + username + "' AND password = '" + password + "' AND deleted = 0;";
-
-            MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
-            while (rdr.Read())
+            using (MySqlConnection con = new MySqlConnection(connectionString))
             {
-                user = new User();
-                user.id = rdr.GetInt32(0);
-                user.username = rdr.GetString(1);
-                user.firstName = rdr.GetString(2);
-                user.lastName = rdr.GetString(3);
-                user.phoneNumber = rdr.GetString(4);
-                user.email = rdr.GetString(5);
-                user.isAdmin = rdr.GetBoolean(6);
+                using (MySqlCommand cmd = new MySqlCommand("loginUser", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.Add("usernameToCheck", MySqlDbType.VarChar).Value = username;
+                    cmd.Parameters.Add("passwordToCheck", MySqlDbType.VarChar).Value = password;
+
+                    con.Open();
+                    MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
+                    if (rdr.HasRows)
+                    {
+                        user = new User();
+                        while (rdr.Read())
+                        {
+                            user.id = rdr.GetInt32(0);
+                            user.username = rdr.GetString(1);
+                            user.firstName = rdr.GetString(2);
+                            user.lastName = rdr.GetString(3);
+                            user.phoneNumber = rdr.GetString(4);
+                            user.email = rdr.GetString(5);
+                            user.isAdmin = rdr.GetBoolean(6);
+                        }
+                        rdr.NextResult();
+                    }
+                }
             }
-            conn.Close();
-            if (conn != null)
+            if (user != null)
             {
-                conn.Dispose();
+                user.wallet = Wallet.getWalletByUserId(user.id);
+                user.company = Company.getCompanyByUserId(user.id);
+                Global.setGlobalUser(user);
             }
-            Global.setGlobalUser(user);
             return user;
         }
 
+        /// <summary>
+        /// Return a user based on their specific user id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static User getUserById(int id)
         {
             User user = new User();
@@ -137,6 +168,11 @@ namespace EZMoney.Models
             return user;
         }
 
+        /// <summary>
+        /// Return a user based on their username
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
         public static User getUserByUsername(string username)
         {
             User user = null;
@@ -163,6 +199,7 @@ namespace EZMoney.Models
                             user.phoneNumber = rdr.GetString(4);
                             user.email = rdr.GetString(5);
                             user.isAdmin = rdr.GetBoolean(6);
+                            user.deleted = rdr.GetBoolean(7);
                         }
                         rdr.NextResult();
                     }
@@ -171,6 +208,11 @@ namespace EZMoney.Models
             return user;
         }
 
+        /// <summary>
+        /// Check if a password matches what is on file
+        /// </summary>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public static bool checkPassword(string password)
         {
             using (MySqlConnection con = new MySqlConnection(connectionString))
@@ -193,6 +235,11 @@ namespace EZMoney.Models
             return false;
         }
 
+        /// <summary>
+        /// Update a users information
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public static bool updateUser(User user)
         {
             bool success = false;
@@ -215,6 +262,11 @@ namespace EZMoney.Models
             return success;
         }
 
+        /// <summary>
+        /// Update a users password
+        /// </summary>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public static bool updatePassword(string password)
         {
             bool success = false;
@@ -234,6 +286,11 @@ namespace EZMoney.Models
             return success;
         }
 
+        /// <summary>
+        /// Delete a user
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public static bool deleteUser(int userId)
         {
             bool success = false;
@@ -255,7 +312,12 @@ namespace EZMoney.Models
 
 
         #region Transactions
-
+        /// <summary>
+        /// Return all transactions within a given range
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="stop"></param>
+        /// <returns></returns>
         public static List<Transaction> getAllUserTransactions(int start, int stop)
         {
             List<Transaction> transactions = new List<Transaction>();
@@ -287,6 +349,11 @@ namespace EZMoney.Models
             return transactions;
         }
 
+        /// <summary>
+        /// Return a user transaction with a specific user id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static List<Transaction> getUserTransactions(int id)
         {
             List<Transaction> transactions = new List<Transaction>();
@@ -317,6 +384,11 @@ namespace EZMoney.Models
             return transactions;
         }
 
+        /// <summary>
+        /// Save a transaction
+        /// </summary>
+        /// <param name="tx"></param>
+        /// <returns></returns>
         public static bool saveTransaction(Transaction tx)
         {
             bool success = false;
@@ -332,6 +404,7 @@ namespace EZMoney.Models
                     cmd.Parameters.Add("@feeAmountInc", MySqlDbType.Decimal).Value = tx.profit.profitAmount;
                     cmd.Parameters.Add("@transactionDateInc", MySqlDbType.VarChar).Value = tx.transactionDate;
                     cmd.Parameters.Add("@memoInc", MySqlDbType.VarChar).Value = tx.memo;
+                    cmd.Parameters.Add("@txComplete", MySqlDbType.Int32).Value = tx.complete;
 
                     con.Open();
                     success = cmd.ExecuteNonQuery() > 0;
@@ -340,6 +413,11 @@ namespace EZMoney.Models
             return success;
         }
 
+        /// <summary>
+        /// Complete a requested transaction
+        /// </summary>
+        /// <param name="tx"></param>
+        /// <returns></returns>
         public static bool completeTransaction(Transaction tx)
         {
             bool success = false;
@@ -360,6 +438,11 @@ namespace EZMoney.Models
             return success;
         }
 
+        /// <summary>
+        /// Deny a requested transaction
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static bool denyTransaction(int id)
         {
             bool success = false;
@@ -378,6 +461,11 @@ namespace EZMoney.Models
             return success;
         }
 
+        /// <summary>
+        /// Get all transactions requested of a user
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static List<Transaction> getPendingTransactions(int id)
         {
             List<Transaction> transactions = new List<Transaction>();
@@ -407,6 +495,11 @@ namespace EZMoney.Models
             return transactions;
         }
 
+        /// <summary>
+        /// Return a transaction based on the transaction ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static Transaction getTransactionByID(int id)
         {
             Transaction tx = new Transaction();
@@ -444,6 +537,30 @@ namespace EZMoney.Models
         #endregion
 
         #region Wallet
+
+        public static bool saveNewWallet(int userId)
+        {
+            bool success = false;
+            using (MySqlConnection con = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand cmd = new MySqlCommand("saveNewWallet", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.Add("@userIdInc", MySqlDbType.Int32).Value = userId;
+
+                    con.Open();
+                    success = cmd.ExecuteNonQuery() > 0;
+                }
+            }
+            return success;
+        }
+
+        /// <summary>
+        /// Return a users wallet based on the users id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static Wallet getUserWallet(int id)
         {
             Wallet wallet = new Wallet();
@@ -475,6 +592,12 @@ namespace EZMoney.Models
             }
         }
 
+        /// <summary>
+        /// Save the current balance of a users wallet
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="currentBalance"></param>
+        /// <returns></returns>
         public static bool saveWalletBalance(int id, decimal currentBalance)
         {
             bool success = false;
@@ -497,6 +620,13 @@ namespace EZMoney.Models
         #endregion
 
         #region Misc
+        /// <summary>
+        /// Check availability of an attribute such as email or username
+        /// </summary>
+        /// <param name="procedure"></param>
+        /// <param name="attribute"></param>
+        /// <param name="toCheck"></param>
+        /// <returns></returns>
         public bool checkAttributeAvailability(string procedure, string attribute, string toCheck)
         {
             bool success = false;
@@ -521,6 +651,11 @@ namespace EZMoney.Models
         #endregion
 
         #region Profit
+        /// <summary>
+        /// Save a profit
+        /// </summary>
+        /// <param name="profit"></param>
+        /// <returns></returns>
         public static bool saveProfit(Profit profit)
         {
             bool success = false;
@@ -541,6 +676,12 @@ namespace EZMoney.Models
             return success;
         }
 
+        /// <summary>
+        /// Return all profits within a range
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="stop"></param>
+        /// <returns></returns>
         public static List<Profit> getAllProfits(int start, int stop)
         {
             List<Profit> profits = new List<Profit>();
@@ -570,6 +711,75 @@ namespace EZMoney.Models
                 }
             }
             return profits;
+        }
+        #endregion
+
+        #region Company
+        public static bool registerCompany(Company company)
+        {
+            bool success = false;
+            using (MySqlConnection con = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand cmd = new MySqlCommand("registerCompany", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.Add("companyUserId", MySqlDbType.Int32).Value = company.userId;
+                    cmd.Parameters.Add("companyName", MySqlDbType.VarChar).Value = company.name;
+                    cmd.Parameters.Add("companySite", MySqlDbType.VarChar).Value = company.website;
+                    cmd.Parameters.Add("companyLogo", MySqlDbType.VarChar).Value = company.logoUrl;
+                    cmd.Parameters.Add("companyAddress1", MySqlDbType.VarChar).Value = company.address1;
+                    cmd.Parameters.Add("companyAddress2", MySqlDbType.VarChar).Value = company.address2;
+                    cmd.Parameters.Add("companyCity", MySqlDbType.VarChar).Value = company.city;
+                    cmd.Parameters.Add("companyState", MySqlDbType.VarChar).Value = company.state;
+                    cmd.Parameters.Add("companyZip", MySqlDbType.VarChar).Value = company.zip;
+                    cmd.Parameters.Add("companyEIN", MySqlDbType.VarChar).Value = company.ein;
+
+                    con.Open();
+                    success = cmd.ExecuteNonQuery() > 0;
+                }
+            }
+            return success;
+        }
+
+        public static Company getCompanyByUserId(int id)
+        {
+            Company company = null;
+            using (MySqlConnection con = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand cmd = new MySqlCommand("getCompanyByUserId", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.Add("idToCheck", MySqlDbType.Int64).Value = id;
+
+                    con.Open();
+                    MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
+                    if (rdr.HasRows)
+                    {
+                        company = new Company();
+                        while (rdr.HasRows)
+                        {
+                            while (rdr.Read())
+                            {
+                                company.id = rdr.GetInt32(0);
+                                company.userId = rdr.GetInt32(1);
+                                company.name = rdr.GetString(2);
+                                company.website= rdr.GetString(3);
+                                company.logoUrl= rdr.GetString(4);
+                                company.address1= rdr.GetString(5);
+                                company.address2 = rdr.GetString(6);
+                                company.city= rdr.GetString(7);
+                                company.state= rdr.GetString(8);
+                                company.zip= rdr.GetString(9);
+                                company.ein= rdr.GetString(10);
+                            }
+                            rdr.NextResult();
+                        }
+                    }
+                }
+                return company;
+            }
         }
         #endregion
     }
