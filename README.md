@@ -35,3 +35,12 @@ Here you can see 3 different tables. Users, transactions, and profits. You can s
 ![image](https://user-images.githubusercontent.com/90625866/218323152-752b1553-d30f-4b36-9545-d97113f560ea.png)
 ![image](https://user-images.githubusercontent.com/90625866/218323162-817cf0a9-468f-4357-9e4d-eedf5512ac72.png)
 ![image](https://user-images.githubusercontent.com/90625866/218323179-87a8ecfc-5eeb-4770-af2d-9a63a47a0a90.png)
+## Design Diagrams
+Database Design  
+![image](https://user-images.githubusercontent.com/90625866/218323970-28d5e973-3bd7-43df-b019-607cc120421e.png)
+Transaction Flowchart
+![image](https://user-images.githubusercontent.com/90625866/218324062-2ed6dd8b-a2c9-4734-8d05-7af9751af8d2.png)
+Class Diagram
+![image](https://user-images.githubusercontent.com/90625866/218324209-6ce1bba1-5246-4599-bf8f-739122c15f9e.png)
+Site Map
+![image](https://user-images.githubusercontent.com/90625866/218324255-45a46356-6365-4c10-98e5-3c8208506a7b.png)
