@@ -38,9 +38,9 @@ Here you can see 3 different tables. Users, transactions, and profits. You can s
 ## Design Diagrams
 Database Design  
 ![image](https://user-images.githubusercontent.com/90625866/218323970-28d5e973-3bd7-43df-b019-607cc120421e.png)
-Transaction Flowchart
+Transaction Flowchart  
 ![image](https://user-images.githubusercontent.com/90625866/218324062-2ed6dd8b-a2c9-4734-8d05-7af9751af8d2.png)
-Class Diagram
+Class Diagram  
 ![image](https://user-images.githubusercontent.com/90625866/218324209-6ce1bba1-5246-4599-bf8f-739122c15f9e.png)
-Site Map
+Site Map  
 ![image](https://user-images.githubusercontent.com/90625866/218324255-45a46356-6365-4c10-98e5-3c8208506a7b.png)
